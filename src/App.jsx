@@ -6,11 +6,9 @@ import About from "./pages/About";
 import Success from "./pages/Success";
 import Failure from "./pages/Failure";
 import DisplayVehicleDetails from "./pages/DisplayVehicleDetails";
+import EstablishmentLogin from "./pages/EstablishmentLogin";
 
-// import Navbar from "./components/Navbar";
 // import Footer from "./components/Footer";
-
-// import Homepage from "./pages/Homepage";
 
 const App = () => {
   return (
@@ -29,6 +27,8 @@ const App = () => {
           path="/displayvehicledetails"
           element={<DisplayVehicleDetails />}
         />
+
+        <Route path="/establishmentlogin" element={<EstablishmentLogin />} />
       </Routes>
     </Router>
   );

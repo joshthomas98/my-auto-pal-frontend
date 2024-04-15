@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Input, Box, Heading, Text, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  Input,
+  Box,
+  Heading,
+  Text,
+  Spinner,
+  Center,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const UserRegEnter = () => {
@@ -60,12 +68,27 @@ const UserRegEnter = () => {
 
   return (
     <Box
-      backgroundColor="#fff"
-      minHeight="80vh"
+      minHeight="100vh"
       display="flex"
       justifyContent="center"
       alignItems="center"
+      position="relative" // Add position relative to allow absolute positioning of spinner
+      overflow="hidden" // Hide overflow to prevent content from extending beyond viewport
     >
+      {/* Blur background if loading */}
+      {isLoading && (
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          width="100%"
+          height="100%"
+          backgroundColor="rgba(255, 255, 255, 0.5)"
+          backdropFilter="blur(5px)"
+          zIndex="1"
+        />
+      )}
+
       <Box
         backgroundColor="white"
         p="4"
@@ -92,15 +115,24 @@ const UserRegEnter = () => {
           Go
         </Button>
 
+        {/* Center the spinner */}
         {isLoading && (
-          <Spinner
-            mt="5"
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
+          <Center
+            position="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            zIndex="2"
+          >
+            <Spinner
+              mt="5"
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Center>
         )}
       </Box>
     </Box>
