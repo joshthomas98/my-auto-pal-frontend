@@ -7,6 +7,8 @@ import Success from "./pages/Success";
 import Failure from "./pages/Failure";
 import DisplayVehicleDetails from "./pages/DisplayVehicleDetails";
 import EstablishmentLogin from "./pages/EstablishmentLogin";
+import EstablishmentRegister from "./pages/EstablishmentRegister";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 // import Footer from "./components/Footer";
 
@@ -29,6 +31,13 @@ const App = () => {
         />
 
         <Route path="/establishmentlogin" element={<EstablishmentLogin />} />
+
+        <Route
+          path="/establishmentregister"
+          element={<EstablishmentRegister />}
+        />
+
+        <Route path="/loadingspinner" element={<LoadingSpinner />} />
       </Routes>
     </Router>
   );

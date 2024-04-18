@@ -9,6 +9,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const UserRegEnter = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const UserRegEnter = () => {
 
   return (
     <Box
-      minHeight="100vh"
+      minHeight="60vh"
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -115,25 +116,7 @@ const UserRegEnter = () => {
           Go
         </Button>
 
-        {/* Center the spinner */}
-        {isLoading && (
-          <Center
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            zIndex="2"
-          >
-            <Spinner
-              mt="5"
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-          </Center>
-        )}
+        {isLoading && <LoadingSpinner />}
       </Box>
     </Box>
   );

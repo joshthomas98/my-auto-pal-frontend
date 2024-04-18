@@ -46,7 +46,9 @@ const EstablishmentLogin = () => {
               <Divider />
               <Flex mt={3} justify="center">
                 <Text mr={2}>New to MyAutoPal?</Text>
-                <Link color="blue.500">Sign up here</Link>
+                <Link href="/establishmentregister" color="blue.500">
+                  Sign up here
+                </Link>
               </Flex>
             </Box>
           </Flex>
