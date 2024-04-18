@@ -27,50 +27,26 @@ const ServiceCenterSignup = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
 
-  const handleChange = (event) => {
-    const { name, value, checked } = event.target;
-    switch (name) {
-      case "establishmentName":
-        setEstablishmentName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      case "confirmPassword":
-        setConfirmPassword(value);
-        break;
-      case "address":
-        setAddress(value);
-        break;
-      case "phoneNumber":
-        setPhoneNumber(value);
-        break;
-      case "agreeToTerms":
-        setAgreeToTerms(checked);
-        break;
-      default:
-        break;
-    }
-  };
-
   const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Password validation
+    if (password !== confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+
+    const data = {
+      establishmentName,
+      email,
+      password,
+      address,
+      phoneNumber,
+    };
+
+    setIsLoading(true);
+
     try {
-      event.preventDefault();
-
-      const data = {
-        establishmentName,
-        email,
-        password,
-        confirmPassword,
-        address,
-        phoneNumber,
-      };
-
-      setIsLoading(true);
-
       const response = await fetch("http://localhost:8000/vehicle-info", {
         method: "POST",
         headers: {
@@ -85,14 +61,14 @@ const ServiceCenterSignup = () => {
 
       // Parse response data
       const responseData = await response.json();
-
       console.log(responseData);
 
-      // Stop loading spinner
-      setIsLoading(false);
+      // Redirect or perform any other actions upon successful signup
+      navigate("/dashboard");
     } catch (error) {
       // Handle errors here
       console.error("Error:", error);
+    } finally {
       // Stop loading spinner
       setIsLoading(false);
     }
@@ -106,112 +82,105 @@ const ServiceCenterSignup = () => {
 
       <Box mt="8">
         <form onSubmit={handleSubmit}>
-          <Center>
-            <Flex direction="column">
-              <Flex direction="row" justifyContent="space-between" mb="4">
-                <FormControl flex="1" mr="2" isRequired>
-                  <FormLabel>Establishment Name</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="Enter your establishment name"
-                    name="establishmentName"
-                    value={establishmentName}
-                    onChange={handleChange}
-                    maxW={500}
-                  />
-                </FormControl>
+          <Flex direction="column" alignItems="center">
+            <Flex direction="row" justifyContent="space-between" mb="4">
+              <FormControl mr="3" isRequired>
+                <FormLabel>Establishment Name</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Enter your establishment name"
+                  value={establishmentName}
+                  onChange={(e) => setEstablishmentName(e.target.value)}
+                  style={{ width: "350px" }}
+                />
+              </FormControl>
 
-                <FormControl flex="1" ml="2" isRequired>
-                  <FormLabel>Email address</FormLabel>
-                  <Input
-                    type="email"
-                    placeholder="Enter your email address"
-                    name="email"
-                    value={email}
-                    onChange={handleChange}
-                    maxW={500}
-                  />
-                </FormControl>
-              </Flex>
-
-              <Flex direction="row" justifyContent="space-between" mb="4">
-                <FormControl flex="1" mr="2" isRequired>
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    placeholder="Enter your password"
-                    name="password"
-                    value={password}
-                    onChange={handleChange}
-                    maxW={500}
-                  />
-                </FormControl>
-
-                <FormControl flex="1" ml="2" isRequired>
-                  <FormLabel>Confirm Password</FormLabel>
-                  {confirmPassword !== password && (
-                    <Text color="red">Passwords don't match</Text>
-                  )}
-                  <Input
-                    type="password"
-                    placeholder="Confirm your password"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={handleChange}
-                    maxW={500}
-                  />
-                </FormControl>
-              </Flex>
-
-              <Flex direction="row" justifyContent="space-between" mb="4">
-                <FormControl id="address" mr="2" isRequired mb="4">
-                  <FormLabel>Address</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="Enter your establishment address"
-                    name="address"
-                    value={address}
-                    onChange={handleChange}
-                    maxW={500}
-                  />
-                </FormControl>
-
-                <FormControl id="phoneNumber" ml="2" mb="4" isRequired>
-                  <FormLabel>Phone Number</FormLabel>
-                  <Input
-                    type="tel"
-                    placeholder="Enter your establishment phone number"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={handleChange}
-                    maxW={500}
-                  />
-                </FormControl>
-              </Flex>
-
-              <Center>
-                <Checkbox
-                  defaultChecked={agreeToTerms}
-                  onChange={handleChange}
-                  name="agreeToTerms"
-                  mb="4"
-                >
-                  I agree to the Terms of Service
-                </Checkbox>
-              </Center>
-
-              <Center>
-                <Button
-                  type="submit"
-                  colorScheme="blue"
-                  mt="6"
-                  alignSelf="flex-end"
-                >
-                  Sign up
-                </Button>
-              </Center>
+              <FormControl ml="3" isRequired>
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ width: "350px" }}
+                />
+              </FormControl>
             </Flex>
-          </Center>
+
+            <Flex direction="row" justifyContent="space-between" mb="4">
+              <FormControl mr="3" isRequired>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ width: "350px" }}
+                />
+              </FormControl>
+
+              <FormControl ml="3" isRequired>
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  style={{ width: "350px" }}
+                />
+                {confirmPassword !== password && (
+                  <Text color="red">Passwords don't match</Text>
+                )}
+              </FormControl>
+            </Flex>
+
+            <Flex direction="row" justifyContent="space-between" mb="4">
+              <FormControl mr="3" isRequired>
+                <FormLabel>Address</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Enter your establishment address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  style={{ width: "350px" }}
+                />
+              </FormControl>
+
+              <FormControl ml="3" isRequired>
+                <FormLabel>Phone Number</FormLabel>
+                <Input
+                  type="tel"
+                  placeholder="Enter your establishment phone number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  style={{ width: "350px" }}
+                />
+              </FormControl>
+            </Flex>
+
+            <Center>
+              <Checkbox
+                isChecked={agreeToTerms}
+                onChange={(e) => setAgreeToTerms(e.target.checked)}
+                name="agreeToTerms"
+                mb="4"
+              >
+                I agree to the Terms of Service
+              </Checkbox>
+            </Center>
+
+            <Center>
+              <Button
+                type="submit"
+                colorScheme="blue"
+                mt="4"
+                alignSelf="flex-end"
+                isLoading={isLoading}
+              >
+                Sign up
+              </Button>
+            </Center>
+          </Flex>
         </form>
 
         {isLoading && <LoadingSpinner />}
