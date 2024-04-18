@@ -18,6 +18,7 @@ const ServiceCenterSignup = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false); // Track if form has been submitted
 
   const [establishmentName, setEstablishmentName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,13 +27,16 @@ const ServiceCenterSignup = () => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [showTermsError, setShowTermsError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Password validation
-    if (password !== confirmPassword) {
-      alert("Passwords don't match");
+    setFormSubmitted(true);
+
+    // Check if terms of service is agreed
+    if (!agreeToTerms) {
+      setShowTermsError(true);
       return;
     }
 
@@ -40,6 +44,7 @@ const ServiceCenterSignup = () => {
       establishmentName,
       email,
       password,
+      confirmPassword,
       address,
       phoneNumber,
     };
@@ -128,7 +133,7 @@ const ServiceCenterSignup = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   style={{ width: "350px" }}
                 />
-                {confirmPassword !== password && (
+                {formSubmitted && confirmPassword !== password && (
                   <Text color="red">Passwords don't match</Text>
                 )}
               </FormControl>
@@ -161,13 +166,23 @@ const ServiceCenterSignup = () => {
             <Center>
               <Checkbox
                 isChecked={agreeToTerms}
-                onChange={(e) => setAgreeToTerms(e.target.checked)}
+                onChange={(e) => {
+                  setAgreeToTerms(e.target.checked);
+                  setShowTermsError(false); // Reset error when checkbox state changes
+                }}
                 name="agreeToTerms"
                 mb="4"
               >
                 I agree to the Terms of Service
               </Checkbox>
             </Center>
+            {showTermsError && (
+              <Center>
+                <Text color="red">
+                  To continue, you must agree to our Terms of Service.
+                </Text>
+              </Center>
+            )}
 
             <Center>
               <Button
