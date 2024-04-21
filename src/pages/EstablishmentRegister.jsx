@@ -40,11 +40,16 @@ const ServiceCenterSignup = () => {
       return;
     }
 
+    // Check if terms of service is agreed
+    if (confirmPassword !== password) {
+      // setShowTermsError(true);
+      return;
+    }
+
     const data = {
       establishmentName,
       email,
       password,
-      confirmPassword,
       address,
       phoneNumber,
     };
