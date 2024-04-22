@@ -31,22 +31,14 @@ const ServiceCenterSignup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setFormSubmitted(true);
 
-    // Check if terms of service is agreed
-    if (!agreeToTerms) {
-      setShowTermsError(true);
+    if (!agreeToTerms || confirmPassword !== password) {
+      // Handle form validation errors
       return;
     }
 
-    // Check if terms of service is agreed
-    if (confirmPassword !== password) {
-      // setShowTermsError(true);
-      return;
-    }
-
-    const data = {
+    const establishmentData = {
       establishmentName,
       email,
       password,
@@ -57,29 +49,25 @@ const ServiceCenterSignup = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/vehicle-info", {
+      const response = await fetch("http://localhost:8000/add-establishment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(establishmentData), // Removed unnecessary wrapping
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-      // Parse response data
       const responseData = await response.json();
       console.log(responseData);
-
-      // Redirect or perform any other actions upon successful signup
-      navigate("/dashboard");
+      navigate("/registrationsuccessful");
     } catch (error) {
-      // Handle errors here
       console.error("Error:", error);
+      navigate("/failure");
     } finally {
-      // Stop loading spinner
       setIsLoading(false);
     }
   };
